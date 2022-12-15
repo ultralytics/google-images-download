@@ -23,7 +23,7 @@ from http.client import IncompleteRead, BadStatusLine
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 from urllib.request import URLError, HTTPError
-
+from selenium.webdriver.common.by import By
 from tqdm import tqdm
 
 http.client._MAXHEADERS = 1000
@@ -203,7 +203,7 @@ class googleimagesdownload:
         browser.get(url)
         time.sleep(0.5)
 
-        element = browser.find_element_by_tag_name("body")
+        element = browser.find_element(By.TAG_NAME, 'body')
         pbar = tqdm(enumerate(range(30)), desc='Downloading HTML...', total=30)  # progress bar
         for _ in pbar:
             try:  # click 'see more' button if found
