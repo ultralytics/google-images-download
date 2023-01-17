@@ -187,6 +187,7 @@ class googleimagesdownload:
     def download_extended_page(self, url, chromedriver):
         from selenium import webdriver
         from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.common.by import By
         options = webdriver.ChromeOptions()
         options.add_argument('--no-sandbox')
         options.add_argument("--headless")
@@ -203,7 +204,7 @@ class googleimagesdownload:
         browser.get(url)
         time.sleep(0.5)
 
-        element = browser.find_element_by_tag_name("body")
+        element = browser.find_element(By.TAG_NAME, "body") # find_element_by_tag_name() has been deprecated
         pbar = tqdm(enumerate(range(30)), desc='Downloading HTML...', total=30)  # progress bar
         for _ in pbar:
             try:  # click 'see more' button if found
