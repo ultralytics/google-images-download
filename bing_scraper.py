@@ -128,7 +128,7 @@ def user_input():
                             help="A word that you would want to prefix in front of each image name", type=str,
                             required=False)
         parser.add_argument('-px', '--proxy', help='specify a proxy address and port', type=str, required=False)
-        parser.add_argument('-cd', '--chromedriver', help='chromedriver path', type=str, default='./chromedriver')
+        parser.add_argument('-cd', '--chromedriver', help='chromedriver path', type=str)
         parser.add_argument('-ri', '--related_images', default=False,
                             help="Downloads images that are similar to the keyword provided", action="store_true")
         parser.add_argument('-sa', '--safe_search', default=False,
@@ -187,12 +187,17 @@ class googleimagesdownload:
     def download_extended_page(self, url, chromedriver):
         from selenium import webdriver
         from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.chrome.service import Service
+        from selenium.webdriver.common.by import By
+
+        service = Service(chromedriver)
         options = webdriver.ChromeOptions()
+
         options.add_argument('--no-sandbox')
         options.add_argument("--headless")
 
         try:
-            browser = webdriver.Chrome(chromedriver, options=options)
+            browser = webdriver.Chrome(service=service, options=options)
         except Exception as e:
             print("chromedriver not found (use the '--chromedriver' argument to specify the path to the executable)"
                   "or google chrome browser is not installed on your machine (exception: %s)" % e)
@@ -203,12 +208,12 @@ class googleimagesdownload:
         browser.get(url)
         time.sleep(0.5)
 
-        element = browser.find_element_by_tag_name("body")
+        element = browser.find_element(By.TAG_NAME, 'body')
         pbar = tqdm(enumerate(range(30)), desc='Downloading HTML...', total=30)  # progress bar
         for _ in pbar:
             try:  # click 'see more' button if found
                 # browser.find_element_by_id("smb").click()  # google images 'see more' button
-                browser.find_element_by_class_name('btn_seemore').click()  # bing images 'see more' button
+                browser.find_element(By.CLASS_NAME, 'btn_seemore').click()  # bing images 'see more' button
             except:
                 pass
             pbar.desc = 'Downloading HTML... %d elements' % len(browser.page_source)  # page source
