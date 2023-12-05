@@ -94,5 +94,3 @@ If you encounter any issues or have features you'd like to request, please visit
   <a href="https://ultralytics.com/discord"><img src="https://github.com/ultralytics/assets/raw/main/social/logo-social-discord.png" width="3%" alt="Ultralytics Discord"></a>
 </div>
 ```
-
-* The above markdown enhancement adds some emojis to increase friendliness, provides additional context in section introductions for better clarity, and ensures that technical steps are explained in a concise but thorough manner. The updates adhere to the AGPL-3.0 license and maintain a professional yet accessible tone. Links and images have not been removed but rather used to ensure continued recognition of the original repository and its contributors.
