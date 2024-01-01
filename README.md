@@ -36,16 +36,19 @@ Run the image scraper following these steps:
 3. Execute the script. Use the `--url` parameter to download images from a specific Bing URL or the `--search` parameter for Bing search terms. By default, the images will be saved in the `./images` directory. Note that any images that cause errors will be skipped during the download process.
 
 Example usage to download images using a URL:
+
 ```bash
 $ python3 bing_scraper.py --url 'https://www.bing.com/images/search?q=flowers' --limit 10 --download --chromedriver /path/to/your/chromedriver
 ```
 
 Example usage to download images using search terms:
+
 ```bash
 $ python3 bing_scraper.py --search 'honeybees on flowers' --limit 10 --download --chromedriver /path/to/your/chromedriver
 
 # Expect output logs showing the download process and any errors encountered.
 ```
+
 <img src="https://user-images.githubusercontent.com/26833433/75287228-dcf2ca80-57ce-11ea-9557-cc13abaff453.jpg" width="">
 
 ## 📜 Citing the Project
@@ -57,6 +60,7 @@ To acknowledge the use of this software in your works, please reference the orig
 We warmly welcome contributions from the community. Your support and contributions are invaluable in making this open-source software greater. Whether you've found a bug, have a feature suggestion, or want to contribute code, please have a look at the [Contributing Guide](https://docs.ultralytics.com/help/contributing). Furthermore, take a moment to fill out our [Survey](https://ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey); your feedback helps us improve continuously. A big thank you 🙏 goes to all the contributors!
 
 <!-- Image to showcase our contributors -->
+
 <a href="https://github.com/ultralytics/yolov5/graphs/contributors">
 <img width="100%" src="https://github.com/ultralytics/assets/raw/main/im/image-contributors.png" alt="Ultralytics open-source contributors"></a>
 
