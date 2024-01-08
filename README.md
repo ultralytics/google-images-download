@@ -5,6 +5,8 @@
 
 Welcome to the Bing image scraping tool, updated and maintained by Ultralytics. This repository contains updated code originally from [https://github.com/hardikvasa/google-images-download](https://github.com/hardikvasa/google-images-download), enabling users to efficiently scrape and download images from Bing for various applications like machine learning, data analysis, or personal projects.
 
+[![Ultralytics Actions](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml)
+
 ## 📋 Requirements
 
 To use this software, ensure you have Python 3.8 or later and all the necessary dependencies installed. Dependencies can be installed by running the following command in your terminal:
