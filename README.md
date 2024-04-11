@@ -12,7 +12,7 @@ For details, visit docker github repository:
 <a href="https://github.com/SaitamaTechno/google-images-download-by-docker">google-images-download-by-docker</a><br> 
 
 ```bash
-docker run -d -p 80:80 --name image_searcher saitamatechno/google_images_download:v1.0
+$ docker run -d -p 80:80 --name image_searcher saitamatechno/google_images_download:v1.0
 ```
 
 ## 📋 Requirements
