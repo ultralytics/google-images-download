@@ -392,9 +392,9 @@ class googleimagesdownload:
     def download_page(self, url):
         try:
             headers = {}
-            headers[
-                "User-Agent"
-            ] = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+            headers["User-Agent"] = (
+                "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+            )
             req = urllib.request.Request(url, headers=headers)
             resp = urllib.request.urlopen(req)
             respData = str(resp.read())
@@ -564,9 +564,9 @@ class googleimagesdownload:
         try:
             searchUrl = "https://www.google.com/searchbyimage?site=search&sa=X&image_url=" + similar_images
             headers = {}
-            headers[
-                "User-Agent"
-            ] = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+            headers["User-Agent"] = (
+                "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+            )
 
             req1 = urllib.request.Request(searchUrl, headers=headers)
             resp1 = urllib.request.urlopen(req1)
