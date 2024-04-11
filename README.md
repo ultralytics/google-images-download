@@ -8,7 +8,7 @@ Welcome to the Bing image scraping tool, updated and maintained by Ultralytics. 
 [![Ultralytics Actions](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml)
 
 ## 🖥️ Docker Run
-For details, visit docker repository: 
+For details, visit docker github repository: 
 <a href="https://github.com/SaitamaTechno/google-images-download-by-docker">google-images-download-by-docker</a><br> 
 
 ```bash
