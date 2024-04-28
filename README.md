@@ -5,7 +5,7 @@
 
 Welcome to the Bing image scraping tool, updated and maintained by Ultralytics. This repository contains updated code originally from [https://github.com/hardikvasa/google-images-download](https://github.com/hardikvasa/google-images-download), enabling users to efficiently scrape and download images from Bing for various applications like machine learning, data analysis, or personal projects.
 
-[![Ultralytics Actions](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml)
+[![Ultralytics Actions](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml) <a href="https://ultralytics.com/discord"><img alt="Discord" src="https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue"></a>
 
 ## 🐳 Docker Run
 
