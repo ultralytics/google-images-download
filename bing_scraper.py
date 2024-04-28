@@ -19,10 +19,9 @@ import ssl
 import sys
 import time  # Importing the time library to check the time of code execution
 import urllib.request
-from http.client import IncompleteRead, BadStatusLine
+from http.client import BadStatusLine, IncompleteRead
 from urllib.parse import quote
-from urllib.request import Request, urlopen
-from urllib.request import URLError, HTTPError
+from urllib.request import HTTPError, Request, URLError, urlopen
 
 from tqdm import tqdm
 
@@ -409,9 +408,9 @@ class googleimagesdownload:
     # Download Page for more than 100 images
     def download_extended_page(self, url, chromedriver):
         from selenium import webdriver
-        from selenium.webdriver.common.keys import Keys
         from selenium.webdriver.chrome.service import Service
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
 
         service = Service(chromedriver)
         options = webdriver.ChromeOptions()
