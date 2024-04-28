@@ -1,6 +1,7 @@
 import glob
-import numpy as np
 import os
+
+import numpy as np
 from skimage import io, transform  # conda install -c conda-forge scikit-image
 from tqdm import tqdm
 

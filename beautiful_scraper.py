@@ -49,7 +49,8 @@ def download_google(word):
 
 def get_html():
     """Fetches and saves HTML content from DermNet to a local directory, requiring `requests`, `os`, and `tqdm`
-    modules."""
+    modules.
+    """
     url = "http://www.dermnet.com/dn2/allJPG3/"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
     links = soup.find_all("a")

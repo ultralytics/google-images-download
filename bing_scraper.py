@@ -20,9 +20,10 @@ import sys
 import time  # Importing the time library to check the time of code execution
 import urllib.request
 from http.client import BadStatusLine, IncompleteRead
-from tqdm import tqdm
 from urllib.parse import quote
 from urllib.request import HTTPError, Request, URLError, urlopen
+
+from tqdm import tqdm
 
 http.client._MAXHEADERS = 1000
 
@@ -474,28 +475,29 @@ class googleimagesdownload:
             start_line = s.find('class="dtviD"')
             start_content = s.find('href="', start_line + 1)
             end_content = s.find('">', start_content + 1)
-            url_item = "https://www.google.com" + str(s[start_content + 6: end_content])
+            url_item = "https://www.google.com" + str(s[start_content + 6 : end_content])
             url_item = url_item.replace("&amp;", "&")
 
             start_line_2 = s.find('class="dtviD"')
             s = s.replace("&amp;", "&")
             start_content_2 = s.find(":", start_line_2 + 1)
             end_content_2 = s.find("&usg=", start_content_2 + 1)
-            url_item_name = str(s[start_content_2 + 1: end_content_2])
+            url_item_name = str(s[start_content_2 + 1 : end_content_2])
 
             chars = url_item_name.find(",g_1:")
             chars_end = url_item_name.find(":", chars + 6)
             if chars_end == -1:
-                updated_item_name = (url_item_name[chars + 5:]).replace("+", " ")
+                updated_item_name = (url_item_name[chars + 5 :]).replace("+", " ")
             else:
-                updated_item_name = (url_item_name[chars + 5: chars_end]).replace("+", " ")
+                updated_item_name = (url_item_name[chars + 5 : chars_end]).replace("+", " ")
 
             return url_item, updated_item_name, end_content
 
     # Getting all links with the help of '_images_get_next_image'
     def get_all_tabs(self, page):
-        """Extracts all tab links from a page, breaks on 'no_tabs' or invalid item names; sleeps 0.1s between 
-        requests for rate control."""
+        """Extracts all tab links from a page, breaks on 'no_tabs' or invalid item names; sleeps 0.1s between requests
+        for rate control.
+        """
         tabs = {}
         while True:
             item, item_name, end_content = self.get_next_tab(page)
@@ -512,8 +514,9 @@ class googleimagesdownload:
 
     # Format the object in readable format
     def format_object(self, object):
-        """Formats input object by cleaning and structuring image-related fields, returning a dictionary with 
-        formatted image data."""
+        """Formats input object by cleaning and structuring image-related fields, returning a dictionary with formatted
+        image data.
+        """
         if "?" in object["murl"]:
             object["murl"] = object["murl"].split("?")[0]
         formatted_object = {}
@@ -528,8 +531,9 @@ class googleimagesdownload:
 
     # function to download single image
     def single_image(self, image_url):
-        """Downloads a single image from a given URL and saves it to a predefined 'images' directory, supporting 
-        specific image formats."""
+        """Downloads a single image from a given URL and saves it to a predefined 'images' directory, supporting
+        specific image formats.
+        """
         main_directory = "images"
         extensions = (".bmp", ".jpg", ".jpeg", ".png", ".tif", ".tiff", ".dng")
         url = image_url
@@ -550,10 +554,10 @@ class googleimagesdownload:
         data = response.read()
         response.close()
 
-        image_name = str(url[(url.rfind("/")) + 1:])
+        image_name = str(url[(url.rfind("/")) + 1 :])
         if "?" in image_name:
             image_name = image_name[: image_name.find("?")]
-        # if ".jpg" in image_name or ".gif" in image_name or ".png" in image_name or ".bmp" in image_name or ".svg" 
+        # if ".jpg" in image_name or ".gif" in image_name or ".png" in image_name or ".bmp" in image_name or ".svg"
         # in image_name or ".webp" in image_name or ".ico" in image_name:
         if any(map(lambda extension: extension in image_name, extensions)):
             file_name = main_directory + "/" + image_name
@@ -593,7 +597,7 @@ class googleimagesdownload:
             resp2 = urllib.request.urlopen(req2)
             l3 = content.find("/search?sa=X&amp;q=")
             l4 = content.find(";", l3 + 19)
-            urll2 = content[l3 + 19: l4]
+            urll2 = content[l3 + 19 : l4]
             return urll2
         except:
             return "Cloud not connect to Google Images endpoint"
@@ -753,8 +757,9 @@ class googleimagesdownload:
 
     # building main search URL
     def build_search_url(self, search_term, params, url, similar_images, specific_site, safe_search):
-        """Constructs a Google search URL based on input parameters such as search term, image specificity, 
-        and safe search settings."""
+        """Constructs a Google search URL based on input parameters such as search term, image specificity, and safe
+        search settings.
+        """
         safe_search_string = "&safe=active"
         # check the args and choose the URL
         if url:
@@ -769,21 +774,21 @@ class googleimagesdownload:
             )
         elif specific_site:
             url = (
-                    "https://www.google.com/search?q="
-                    + quote(search_term.encode("utf-8"))
-                    + "&as_sitesearch="
-                    + specific_site
-                    + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
-                    + params
-                    + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
+                "https://www.google.com/search?q="
+                + quote(search_term.encode("utf-8"))
+                + "&as_sitesearch="
+                + specific_site
+                + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
+                + params
+                + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
             )
         else:
             url = (
-                    "https://www.google.com/search?q="
-                    + quote(search_term.encode("utf-8"))
-                    + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
-                    + params
-                    + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
+                "https://www.google.com/search?q="
+                + quote(search_term.encode("utf-8"))
+                + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
+                + params
+                + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
             )
 
         # safe search check
@@ -897,7 +902,7 @@ class googleimagesdownload:
 
                 extensions = [".jpg", ".jpeg", ".gif", ".png", ".bmp", ".svg", ".webp", ".ico"]
                 # keep everything after the last '/'
-                image_name = str(image_url[(image_url.rfind("/")) + 1:])
+                image_name = str(image_url[(image_url.rfind("/")) + 1 :])
                 if format:
                     if not image_format or image_format != format:
                         download_status = "fail"
@@ -1008,8 +1013,9 @@ class googleimagesdownload:
 
     # Finding 'Next Image' from the given raw page
     def _get_next_item(self, s):
-        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 
-        0) if not found."""
+        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not
+        found.
+        """
         start_line = s.find("imgpt")
         if start_line == -1:  # If no links are found then give an error!
             end_quote = 0
@@ -1019,7 +1025,7 @@ class googleimagesdownload:
             start_line = s.find('class="imgpt"')
             start_object = s.find('m="{', start_line)
             end_object = s.find('}"', start_object)
-            object_raw = str(s[(start_object + 3): (end_object + 1)])
+            object_raw = str(s[(start_object + 3) : (end_object + 1)])
 
             # remove escape characters with python 3.4+
             try:
@@ -1032,8 +1038,9 @@ class googleimagesdownload:
 
     # Getting all links with the help of '_images_get_next_image'
     def _get_all_items(self, page, main_directory, dir_name, limit, arguments):
-        """Fetches and formats items from a page up to a specified limit, applying optional metadata and offset 
-        arguments."""
+        """Fetches and formats items from a page up to a specified limit, applying optional metadata and offset
+        arguments.
+        """
         items = []
         abs_path = []
         errorCount = 0
@@ -1200,11 +1207,11 @@ class googleimagesdownload:
 
         # If single_image or url argument not present then keywords is mandatory argument
         if (
-                arguments["single_image"] is None
-                and arguments["url"] is None
-                and arguments["similar_images"] is None
-                and arguments["keywords"] is None
-                and arguments["keywords_from_file"] is None
+            arguments["single_image"] is None
+            and arguments["url"] is None
+            and arguments["similar_images"] is None
+            and arguments["keywords"] is None
+            and arguments["keywords_from_file"] is None
         ):
             print(
                 "-------------------------------\n"
@@ -1233,14 +1240,14 @@ class googleimagesdownload:
                 i = 0
                 while i < len(search_keyword):  # 3.for every main keyword
                     iteration = (
-                            "\n"
-                            + "Item no.: "
-                            + str(i + 1)
-                            + " -->"
-                            + " Item name = "
-                            + (pky)
-                            + (search_keyword[i])
-                            + (sky)
+                        "\n"
+                        + "Item no.: "
+                        + str(i + 1)
+                        + " -->"
+                        + " Item name = "
+                        + (pky)
+                        + (search_keyword[i])
+                        + (sky)
                     )
                     # if not arguments["silent_mode"]:
                     #     print(iteration.encode('raw_unicode_escape').decode('utf-8'))
