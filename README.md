@@ -23,7 +23,7 @@ To use this software, ensure you have Python 3.8 or later and all the necessary 
 $ pip install -r requirements.txt
 ```
 
-The `requirements.txt` file is located [here](https://github.com/ultralytics/google-images-download/blob/master/requirements.txt), which includes `selenium` among others.
+The `requirements.txt` file is located [here](https://github.com/ultralytics/google-images-download/blob/main/requirements.txt), which includes `selenium` among others.
 
 ## ⚙️ Installation
 
