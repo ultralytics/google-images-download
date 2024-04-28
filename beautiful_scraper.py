@@ -7,11 +7,13 @@ from tqdm import tqdm
 
 
 def download_uri(uri, dir="./"):
+    """Downloads a file from a URI to a local directory, defaulting to the current directory."""
     with open(dir + uri.split("/")[-1], "wb") as f:
         f.write(requests.get(uri, stream=True).content)
 
 
 def download_baidu(word):
+    """Downloads images from Baidu based on a search word, saving them with a specific naming convention."""
     url = "https://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=" + word + "&ct=201326592&v=flip"
     pic_url = re.findall('"objURL":"(.*?)",', requests.get(url).text, re.S)
 
@@ -32,6 +34,8 @@ def download_baidu(word):
 
 
 def download_google(word):
+    """Downloads images from Bing for a given search word by scraping image links and using curl to download."""
+
     # url = 'https://www.google.com/search?q=' + word + '&client=opera&hs=cTQ&source=lnms&tbm=isch&sa=X&ved=0ahUKEwig3LOx4PzKAhWGFywKHZyZAAgQ_AUIBygB&biw=1920&bih=982'
     url = "https://www.bing.com/images/search?q=" + word
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
@@ -44,6 +48,9 @@ def download_google(word):
 
 
 def get_html():
+    """Fetches and saves HTML content from DermNet to a local directory, requiring `requests`, `os`, and `tqdm`
+    modules.
+    """
     url = "http://www.dermnet.com/dn2/allJPG3/"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
     links = soup.find_all("a")
@@ -58,6 +65,7 @@ def get_html():
 
 
 def organize_folders():
+    """Organizes and downloads image files from DermNet into a local directory, creating it if it doesn't exist."""
     url = "http://www.dermnet.com/dn2/allJPG3/"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
     links = soup.find_all("a")

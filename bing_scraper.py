@@ -72,6 +72,7 @@ args_list = [
 
 
 def user_input():
+    """Parses user input for configuration settings or search parameters and returns list of arguments."""
     config = argparse.ArgumentParser()
     config.add_argument("-cf", "--config_file", help="config file name", default="", type=str, required=False)
     config_file_check = config.parse_known_args()
@@ -385,10 +386,12 @@ def user_input():
 
 class googleimagesdownload:
     def __init__(self):
+        """Initializes a googleimagesdownload object to fetch images from Google Images."""
         pass
 
     # Downloading entire Web Document (Raw Page Content)
     def download_page(self, url):
+        """Downloads raw page content from URL using custom User-Agent; returns string."""
         try:
             headers = {}
             headers["User-Agent"] = (
@@ -398,7 +401,7 @@ class googleimagesdownload:
             resp = urllib.request.urlopen(req)
             respData = str(resp.read())
             return respData
-        except Exception as e:
+        except Exception:
             print(
                 "Could not open URL. Please check your internet connection and/or ssl settings \n"
                 "If you are using proxy, make sure your proxy settings is configured correctly"
@@ -407,6 +410,7 @@ class googleimagesdownload:
 
     # Download Page for more than 100 images
     def download_extended_page(self, url, chromedriver):
+        """Downloads an extended webpage content using Selenium, given a URL and Chromedriver path."""
         from selenium import webdriver
         from selenium.webdriver.chrome.service import Service
         from selenium.webdriver.common.by import By
@@ -451,14 +455,17 @@ class googleimagesdownload:
 
     # Correcting the escape characters for python2
     def replace_with_byte(self, match):
+        """Replaces matched group with its ASCII character equivalent using octal value."""
         return chr(int(match.group(0)[1:], 8))
 
     def repair(self, brokenjson):
+        """Repairs invalid escape sequences in JSON strings by converting octal values to ASCII characters."""
         invalid_escape = re.compile(r"\\[0-7]{1,3}")  # up to 3 digits for byte values up to FF
         return invalid_escape.sub(self.replace_with_byte, brokenjson)
 
     # Finding 'Next Image' from the given raw page
     def get_next_tab(self, s):
+        """Parses HTML to find and return the next tab's URL, label, and end content position."""
         start_line = s.find('class="dtviD"')
         if start_line == -1:  # If no links are found then give an error!
             end_quote = 0
@@ -488,6 +495,9 @@ class googleimagesdownload:
 
     # Getting all links with the help of '_images_get_next_image'
     def get_all_tabs(self, page):
+        """Extracts all tab links from a page, breaks on 'no_tabs' or invalid item names; sleeps 0.1s between requests
+        for rate control.
+        """
         tabs = {}
         while True:
             item, item_name, end_content = self.get_next_tab(page)
@@ -504,6 +514,9 @@ class googleimagesdownload:
 
     # Format the object in readable format
     def format_object(self, object):
+        """Formats input object by cleaning and structuring image-related fields, returning a dictionary with formatted
+        image data.
+        """
         if "?" in object["murl"]:
             object["murl"] = object["murl"].split("?")[0]
         formatted_object = {}
@@ -518,6 +531,9 @@ class googleimagesdownload:
 
     # function to download single image
     def single_image(self, image_url):
+        """Downloads a single image from a given URL and saves it to a predefined 'images' directory, supporting
+        specific image formats.
+        """
         main_directory = "images"
         extensions = (".bmp", ".jpg", ".jpeg", ".png", ".tif", ".tiff", ".dng")
         url = image_url
@@ -541,7 +557,8 @@ class googleimagesdownload:
         image_name = str(url[(url.rfind("/")) + 1 :])
         if "?" in image_name:
             image_name = image_name[: image_name.find("?")]
-        # if ".jpg" in image_name or ".gif" in image_name or ".png" in image_name or ".bmp" in image_name or ".svg" in image_name or ".webp" in image_name or ".ico" in image_name:
+        # if ".jpg" in image_name or ".gif" in image_name or ".png" in image_name or ".bmp" in image_name or ".svg"
+        # in image_name or ".webp" in image_name or ".ico" in image_name:
         if any(map(lambda extension: extension in image_name, extensions)):
             file_name = main_directory + "/" + image_name
         else:
@@ -560,6 +577,7 @@ class googleimagesdownload:
         return
 
     def similar_images(self, similar_images):
+        """Finds images similar to the input URL by performing a Google reverse image search."""
         try:
             searchUrl = "https://www.google.com/searchbyimage?site=search&sa=X&image_url=" + similar_images
             headers = {}
@@ -586,6 +604,7 @@ class googleimagesdownload:
 
     # Building URL parameters
     def build_url_parameters(self, arguments):
+        """Generates URL parameters for language specifications using given language option."""
         if arguments["language"]:
             lang = "&lr="
             lang_param = {
@@ -738,7 +757,9 @@ class googleimagesdownload:
 
     # building main search URL
     def build_search_url(self, search_term, params, url, similar_images, specific_site, safe_search):
-        # check safe_search
+        """Constructs a Google search URL based on input parameters such as search term, image specificity, and safe
+        search settings.
+        """
         safe_search_string = "&safe=active"
         # check the args and choose the URL
         if url:
@@ -778,6 +799,7 @@ class googleimagesdownload:
 
     # measures the file size
     def file_size(self, file_path):
+        """Returns a string representing the file size in the most suitable units (bytes to TB)."""
         if os.path.isfile(file_path):
             file_info = os.stat(file_path)
             size = file_info.st_size
@@ -789,6 +811,7 @@ class googleimagesdownload:
 
     # keywords from file
     def keywords_from_file(self, file_name):
+        """Extracts keywords from a .txt or .csv file, ignoring empty lines; returns a list of keywords."""
         search_keyword = []
         with codecs.open(file_name, "r", encoding="utf-8-sig") as f:
             if ".csv" in file_name:
@@ -810,7 +833,7 @@ class googleimagesdownload:
 
     # make directories
     def create_directories(self, main_directory, dir_name):
-        # make a search keyword  directory
+        """Creates a sub-directory `dir_name` within `main_directory`, handling pre-existing directories gracefully."""
         try:
             if not os.path.exists(main_directory):
                 os.makedirs(main_directory)
@@ -990,6 +1013,9 @@ class googleimagesdownload:
 
     # Finding 'Next Image' from the given raw page
     def _get_next_item(self, s):
+        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not
+        found.
+        """
         start_line = s.find("imgpt")
         if start_line == -1:  # If no links are found then give an error!
             end_quote = 0
@@ -1012,6 +1038,9 @@ class googleimagesdownload:
 
     # Getting all links with the help of '_images_get_next_image'
     def _get_all_items(self, page, main_directory, dir_name, limit, arguments):
+        """Fetches and formats items from a page up to a specified limit, applying optional metadata and offset
+        arguments.
+        """
         items = []
         abs_path = []
         errorCount = 0
@@ -1080,6 +1109,7 @@ class googleimagesdownload:
 
     # Bulk Download
     def download(self, arguments):
+        """Downloads images/videos based on arguments; returns paths and error count, supporting bulk and CLI input."""
         paths_agg = {}
         # for input coming from other python files
         if __name__ != "__main__":
@@ -1124,6 +1154,7 @@ class googleimagesdownload:
         return paths_agg, errors
 
     def download_executor(self, arguments):
+        """Executes downloads based on defined keywords and arguments, returning path aggregates and error counts."""
         paths = {}
         errorCount = None
         for arg in args_list:
@@ -1293,6 +1324,7 @@ class googleimagesdownload:
 
 
 def main():
+    """Executes image downloads based on user input, managing single/multiple downloads, error tracking, and timing."""
     records = user_input()
     total_errors = 0
     t0 = time.time()  # start the timer
@@ -1306,9 +1338,8 @@ def main():
             total_errors = total_errors + errors
 
         t1 = time.time()  # stop the timer
-        total_time = (
-            t1 - t0
-        )  # Calculating the total time required to crawl, find and download all the links of 60,000 images
+        # Calculating the total time required to crawl, find and download all the links of 60,000 images
+        total_time = t1 - t0
         if not arguments["silent_mode"]:
             if arguments["download"]:
                 print(
