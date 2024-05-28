@@ -90,6 +90,7 @@ For commercial applications, the Enterprise License provides a solution that ena
 
 If you encounter any issues or have features you'd like to request, please visit our [GitHub Issues](https://github.com/ultralytics/google-images-download/issues) page. For general discussions, questions, or to connect with the community, join our vibrant [Discord](https://ultralytics.com/discord) community.
 
+
 <br>
 <div align="center">
   <!-- Social media and contact icons -->
