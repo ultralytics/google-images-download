@@ -11,7 +11,7 @@ for f in tqdm(files, desc="Scanning images", total=len(files)):
     # Remove bad suffixes
     suffix = f.split(".")[-1]
     if suffix in ["gif", "svg"]:
-        print("Removing %s" % f)
+        print(f"Removing {f}")
         os.remove(f)
         continue
 
@@ -22,11 +22,10 @@ for f in tqdm(files, desc="Scanning images", total=len(files)):
         # Downsize to max_wh if necessary
         r = max_wh / max(img.shape)  # ratio
         if r < 1:  # resize
-            print("Resizing %s" % f)
+            print(f"Resizing {f}")
             img = transform.resize(img, (round(img.shape[0] * r), round(img.shape[1] * r)))
             io.imsave(f, img.astype(np.uint8))
 
-    # Remove corrupted
-    except:
-        print("Removing corrupted %s" % f)
+    except Exception:
+        print(f"Removing corrupted {f}")
         os.remove(f)

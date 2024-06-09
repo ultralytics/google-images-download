@@ -14,7 +14,7 @@ def download_uri(uri, dir="./"):
 
 def download_baidu(word):
     """Downloads images from Baidu based on a search word, saving them with a specific naming convention."""
-    url = "https://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word=" + word + "&ct=201326592&v=flip"
+    url = f"https://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word={word}&ct=201326592&v=flip"
     pic_url = re.findall('"objURL":"(.*?)",', requests.get(url).text, re.S)
 
     i = 0
@@ -26,10 +26,9 @@ def download_baidu(word):
             print("exception")
             continue
 
-        string = "pictures" + word + "_" + str(i) + ".jpg"
-        fp = open(string, "wb")
-        fp.write(pic.content)
-        fp.close()
+        string = f"pictures{word}_{str(i)}.jpg"
+        with open(string, "wb") as fp:
+            fp.write(pic.content)
         i += 1
 
 
@@ -37,13 +36,13 @@ def download_google(word):
     """Downloads images from Bing for a given search word by scraping image links and using curl to download."""
 
     # url = 'https://www.google.com/search?q=' + word + '&client=opera&hs=cTQ&source=lnms&tbm=isch&sa=X&ved=0ahUKEwig3LOx4PzKAhWGFywKHZyZAAgQ_AUIBygB&biw=1920&bih=982'
-    url = "https://www.bing.com/images/search?q=" + word
+    url = f"https://www.bing.com/images/search?q={word}"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
     links = soup.find_all("a", {"class": "thumb"})
 
     for link in links:
         link = link.get("href")
-        s = "curl -s -L -o '%s' '%s'" % (link.split("/")[-1], link)
+        s = f"""curl -s -L -o '{link.split("/")[-1]}' '{link}'"""
         os.system(s)
 
 
@@ -60,7 +59,7 @@ def get_html():
         link = url + link.get("href")
         f = dir + link.split("/")[-1]
         if not os.path.exists(f):
-            s = "curl -s -L -o '%s' '%s'" % (f, link)
+            s = f"curl -s -L -o '{f}' '{link}'"
             os.system(s)
 
 
@@ -75,7 +74,7 @@ def organize_folders():
         link = url + link.get("href")
         f = dir + link.split("/")[-1]
         if not os.path.exists(f):
-            s = "curl -s -L -o '%s' '%s'" % (f, link)
+            s = f"curl -s -L -o '{f}' '{link}'"
             os.system(s)
 
 
