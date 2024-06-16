@@ -581,7 +581,7 @@ class googleimagesdownload:
 
             newurl = f"https://www.google.com/search?tbs=sbi:{urll}&site=search&sa=X"
             req2 = urllib.request.Request(newurl, headers=headers)
-            resp2 = urllib.request.urlopen(req2)
+            urllib.request.urlopen(req2)
             l3 = content.find("/search?sa=X&amp;q=")
             l4 = content.find(";", l3 + 19)
             return content[l3 + 19 : l4]
@@ -889,13 +889,13 @@ class googleimagesdownload:
                 if no_numbering:
                     path = f"{main_directory}/{dir_name}/{prefix}{image_name}"
                 else:
-                    path = f"{main_directory}/" + dir_name + "/" + prefix + str(count) + "." + image_name
+                    path = f"{main_directory}/{dir_name}/{prefix}{str(count)}.{image_name}"
 
                 try:
                     with open(path, "wb") as output_file:
                         output_file.write(data)
                     if save_source:
-                        list_path = main_directory + "/" + save_source + ".txt"
+                        list_path = f"{main_directory}/{save_source}.txt"
                         with open(list_path, "a") as list_file:
                             list_file.write(path + "\t" + img_src + "\n")
                     absolute_path = os.path.abspath(path)
@@ -1171,16 +1171,7 @@ class googleimagesdownload:
             for sky in suffix_keywords:  # 2.for every suffix keywords
                 i = 0
                 while i < len(search_keyword):  # 3.for every main keyword
-                    iteration = (
-                        "\n"
-                        + "Item no.: "
-                        + str(i + 1)
-                        + " -->"
-                        + " Item name = "
-                        + (pky)
-                        + (search_keyword[i])
-                        + (sky)
-                    )
+                    ("\n" + "Item no.: " + str(i + 1) + " -->" + " Item name = " + (pky) + (search_keyword[i]) + (sky))
                     # if not arguments["silent_mode"]:
                     #     print(iteration.encode('raw_unicode_escape').decode('utf-8'))
                     #     print("Evaluating...")
