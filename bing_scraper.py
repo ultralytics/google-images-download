@@ -841,7 +841,7 @@ class googleimagesdownload:
     ):
         download_message = ""
         if not download:
-            download_message = "%s %s" % (image_url, download_message)
+            download_message = f"{image_url} {download_message}"
             return "success", download_message, None, image_url
 
         if ignore_urls and any(url in image_url for url in ignore_urls.split(",")):
@@ -869,7 +869,7 @@ class googleimagesdownload:
                     download_message = "Wrong image format returned. Skipping..."
                     return_image_name = ""
                     absolute_path = ""
-                    download_message = "%s %s" % (image_url, download_message)
+                    download_message = f"{image_url} {download_message}"
                     return download_status, download_message, return_image_name, absolute_path
 
                 if image_format == "" or not image_format or f".{image_format}" not in extensions:
@@ -877,7 +877,7 @@ class googleimagesdownload:
                     download_message = "Invalid or missing image format. Skipping..."
                     return_image_name = ""
                     absolute_path = ""
-                    download_message = "%s %s" % (image_url, download_message)
+                    download_message = f"{image_url} {download_message}"
                     return download_status, download_message, return_image_name, absolute_path
                 elif image_name.lower().find(f".{image_format}") < 0:
                     image_name = f"{image_name}.{image_format}"
@@ -907,12 +907,12 @@ class googleimagesdownload:
 
                 # return image name back to calling method to use it for thumbnail downloads
                 download_status = "success"
-                download_message = "%s %s" % (image_url, download_message)
+                download_message = f"{image_url} {download_message}"
                 return_image_name = prefix + str(count) + "." + image_name
 
                 # image size parameter
                 if not silent_mode and print_size:
-                    print("Image Size: " + str(self.file_size(path)))
+                    print(f"Image Size: {str(self.file_size(path))}")
 
             except UnicodeEncodeError as e:
                 download_status = "fail"
