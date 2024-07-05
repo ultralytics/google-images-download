@@ -839,6 +839,7 @@ class googleimagesdownload:
         format,
         ignore_urls,
     ):
+        """Downloads an image from a URL and saves it to a specified directory, supporting various formats and options."""
         download_message = ""
         if not download:
             download_message = f"{image_url} {download_message}"
