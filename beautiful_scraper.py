@@ -34,7 +34,6 @@ def download_baidu(word):
 
 def download_google(word):
     """Downloads images from Bing for a given search word by scraping image links and using curl to download."""
-
     # url = 'https://www.google.com/search?q=' + word + '&client=opera&hs=cTQ&source=lnms&tbm=isch&sa=X&ved=0ahUKEwig3LOx4PzKAhWGFywKHZyZAAgQ_AUIBygB&biw=1920&bih=982'
     url = f"https://www.bing.com/images/search?q={word}"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")
