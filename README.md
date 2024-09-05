@@ -41,7 +41,7 @@ Run the image scraper following these steps:
 
 1. Ensure Google Chrome is installed on your machine. If not, download and install from [here](https://www.google.com/chrome/).
 
-2. Download and update chromedriver corresponding to your version of Chrome [here](https://chromedriver.chromium.org/).
+2. Download and update chromedriver corresponding to your version of Chrome [here](https://developer.chrome.com/docs/chromedriver/).
 
 3. Execute the script. Use the `--url` parameter to download images from a specific Bing URL or the `--search` parameter for Bing search terms. By default, the images will be saved in the `./images` directory. Note that any images that cause errors will be skipped during the download process.
 
@@ -67,7 +67,7 @@ To acknowledge the use of this software in your works, please reference the orig
 
 ## 🤝 Contributing
 
-We warmly welcome contributions from the community. Your support and contributions are invaluable in making this open-source software greater. Whether you've found a bug, have a feature suggestion, or want to contribute code, please have a look at the [Contributing Guide](https://docs.ultralytics.com/help/contributing). Furthermore, take a moment to fill out our [Survey](https://ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey); your feedback helps us improve continuously. A big thank you 🙏 goes to all the contributors!
+We warmly welcome contributions from the community. Your support and contributions are invaluable in making this open-source software greater. Whether you've found a bug, have a feature suggestion, or want to contribute code, please have a look at the [Contributing Guide](https://docs.ultralytics.com/help/contributing). Furthermore, take a moment to fill out our [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey); your feedback helps us improve continuously. A big thank you 🙏 goes to all the contributors!
 
 <!-- Image to showcase our contributors -->
 
@@ -84,11 +84,11 @@ This license is ideal for individuals or teams working on non-commercial project
 
 ### Enterprise License
 
-For commercial applications, the Enterprise License provides a solution that enables the integration of Ultralytics software into your products without the restrictions of AGPL-3.0. This license is suited for commercial offerings where the specifics of AGPL-3.0 are not appropriate. If you are interested in an enterprise solution, please reach out to us for more information through [Ultralytics Licensing](https://ultralytics.com/license).
+For commercial applications, the Enterprise License provides a solution that enables the integration of Ultralytics software into your products without the restrictions of AGPL-3.0. This license is suited for commercial offerings where the specifics of AGPL-3.0 are not appropriate. If you are interested in an enterprise solution, please reach out to us for more information through [Ultralytics Licensing](https://www.ultralytics.com/license).
 
 ## 📬 Contact
 
-If you encounter any issues or have features you'd like to request, please visit our [GitHub Issues](https://github.com/ultralytics/google-images-download/issues) page. For general discussions, questions, or to connect with the community, join our vibrant [Discord](https://ultralytics.com/discord) community.
+If you encounter any issues or have features you'd like to request, please visit our [GitHub Issues](https://github.com/ultralytics/google-images-download/issues) page. For general discussions, questions, or to connect with the community, join our vibrant [Discord](https://discord.com/invite/ultralytics) community.
 
 <br>
 <div align="center">

@@ -424,7 +424,7 @@ class googleimagesdownload:
         except Exception as e:
             print(
                 "chromedriver not found (use the '--chromedriver' argument to specify the path to the executable)"
-                "or google chrome browser is not installed on your machine (exception: %s)" % e
+                f"or google chrome browser is not installed on your machine (exception: {e})"
             )
             sys.exit()
         browser.set_window_size(1920, 3840)  # 4k
@@ -560,7 +560,7 @@ class googleimagesdownload:
         try:
             with open(file_name, "wb") as output_file:
                 output_file.write(data)
-        except IOError as e:
+        except OSError as e:
             raise e
         except OSError as e:
             raise e
@@ -787,7 +787,7 @@ class googleimagesdownload:
             size = file_info.st_size
             for x in ["bytes", "KB", "MB", "GB", "TB"]:
                 if size < 1024.0:
-                    return "%3.1f %s" % (size, x)
+                    return f"{size:3.1f} {x}"
                 size /= 1024.0
             return size
 
@@ -955,7 +955,7 @@ class googleimagesdownload:
             return_image_name = ""
             absolute_path = ""
 
-        except IOError as e:  # If there is any IOError
+        except OSError as e:  # If there is any IOError
             download_status = "fail"
             download_message = "IOError on an image...trying next one..." + " Error: " + str(e)
             return_image_name = ""
@@ -1036,7 +1036,7 @@ class googleimagesdownload:
                     arguments["ignore_urls"],
                 )
                 if not arguments["silent_mode"]:
-                    print("%g/%g %s" % (count, limit, download_message))
+                    print(f"{count:g}/{limit:g} {download_message}")
                 if download_status == "success":
                     count += 1
                     object["image_filename"] = return_image_name
@@ -1205,7 +1205,7 @@ class googleimagesdownload:
                         arguments["safe_search"],
                     )  # building main search url
 
-                    print("Searching for %s" % url)
+                    print(f"Searching for {url}")
                     if limit < 1:  # if limit < 101
                         raw_html = self.download_page(url)  # download page
                     else:
@@ -1269,11 +1269,12 @@ def main():
         if not arguments["silent_mode"]:
             if arguments["download"]:
                 print(
-                    "Done with %g errors in %.1fs. All images saved to %s\n"
-                    % (total_errors, total_time, os.getcwd() + os.sep + "images")
+                    "Done with {:g} errors in {:.1f}s. All images saved to {}\n".format(
+                        total_errors, total_time, os.getcwd() + os.sep + "images"
+                    )
                 )
             else:
-                print("Done with %g errors in %.1fs\n" % (total_errors, total_time))
+                print(f"Done with {total_errors:g} errors in {total_time:.1f}s\n")
 
 
 if __name__ == "__main__":
