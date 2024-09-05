@@ -1269,7 +1269,9 @@ def main():
         if not arguments["silent_mode"]:
             if arguments["download"]:
                 print(
-                    "Done with {:g} errors in {:.1f}s. All images saved to {}\n".format(total_errors, total_time, os.getcwd() + os.sep + "images")
+                    "Done with {:g} errors in {:.1f}s. All images saved to {}\n".format(
+                        total_errors, total_time, os.getcwd() + os.sep + "images"
+                    )
                 )
             else:
                 print(f"Done with {total_errors:g} errors in {total_time:.1f}s\n")
