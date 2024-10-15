@@ -560,9 +560,7 @@ class googleimagesdownload:
         try:
             with open(file_name, "wb") as output_file:
                 output_file.write(data)
-        except OSError as e:
-            raise e
-        except OSError as e:
+        except (OSError, OSError) as e:
             raise e
         print("completed ====> " + image_name.encode("raw_unicode_escape").decode("utf-8"))
         return
