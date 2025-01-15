@@ -1,3 +1,5 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 # Bing Images and Google Images web scraper
 # Requires chromedriver. Download from https://chromedriver.chromium.org/
 
@@ -373,7 +375,7 @@ def user_input():
         # args.chromedriver = './chromedriver'
 
         if args.search:  # construct url
-            args.url = f'https://www.bing.com/images/search?q={args.search.replace(" ", "%20")}'
+            args.url = f"https://www.bing.com/images/search?q={args.search.replace(' ', '%20')}"
             args.image_directory = args.search.replace(" ", "_")
 
         arguments = vars(args)
@@ -469,7 +471,7 @@ class googleimagesdownload:
         start_line = s.find('class="dtviD"')
         start_content = s.find('href="', start_line + 1)
         end_content = s.find('">', start_content + 1)
-        url_item = f"https://www.google.com{str(s[start_content + 6:end_content])}"
+        url_item = f"https://www.google.com{str(s[start_content + 6 : end_content])}"
         url_item = url_item.replace("&amp;", "&")
 
         start_line_2 = s.find('class="dtviD"')
@@ -799,7 +801,7 @@ class googleimagesdownload:
                     line.replace("\n", "").replace("\r", "") for line in f if line not in ["\n", "\r\n"]
                 )
             else:
-                print("Invalid file type: Valid file types are either .txt or .csv \n" "exiting...")
+                print("Invalid file type: Valid file types are either .txt or .csv \nexiting...")
                 sys.exit()
         return search_keyword
 
