@@ -4,7 +4,7 @@
 
 Welcome to the Bing Image Scraper, a tool updated and maintained by Ultralytics. This repository provides enhanced code, originally based on the [google-images-download](https://github.com/hardikvasa/google-images-download) project by hardikvasa, specifically adapted for scraping images from Bing. It allows users to efficiently download images for various purposes, such as building datasets for [machine learning](https://www.ultralytics.com/glossary/machine-learning-ml), performing [data analysis](https://en.wikipedia.org/wiki/Data_analysis), or curating collections for personal projects. Explore more tools and models at [Ultralytics](https://www.ultralytics.com/).
 
-[![Ultralytics Actions](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/format.yml)
+[![CI](https://github.com/ultralytics/google-images-download/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/ci.yml)
 [![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
 [![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com/)
 [![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://reddit.com/r/ultralytics)
@@ -43,8 +43,8 @@ pip install -r requirements.txt
 
 Follow these steps to run the image scraper:
 
-1.  **Install Google Chrome**: Ensure Google Chrome is installed on your system. If not, download it from the official [Google Chrome website](https://www.google.com/chrome/).
-2.  **Download ChromeDriver**: Get the correct version of ChromeDriver that matches your installed Chrome version. Download links and instructions are available on the [ChromeDriver documentation page](https://developer.chrome.com/docs/chromedriver/). Make sure to note the path to the downloaded `chromedriver` executable.
+1.  **Run small searches directly**: Searches with `--limit 100` or lower use the Bing results HTML directly and do not require Chrome or ChromeDriver.
+2.  **Install Google Chrome for larger searches**: Searches above 100 images use Selenium to scroll Bing Images. Selenium can usually locate a compatible driver automatically, or you can pass one with `--chromedriver`.
 3.  **Execute the Script**: Run the `bing_scraper.py` script using Python. You can specify a Bing Images search results URL using the `--url` argument or provide search terms directly with the `--search` argument. Images will be saved to the `./images` directory by default. The script is designed to skip images that cause errors during download. For insights into data collection best practices, check out our blog post on [exploring data labeling](https://www.ultralytics.com/blog/exploring-data-labeling-for-computer-vision-projects).
 
 **Example using a URL:**
@@ -56,10 +56,41 @@ python3 bing_scraper.py --url 'https://www.bing.com/images/search?q=wildflowers'
 **Example using search terms:**
 
 ```bash
-python3 bing_scraper.py --search 'bees collecting pollen' --limit 15 --download --chromedriver /path/to/your/chromedriver
+python3 bing_scraper.py --search "bees collecting pollen" --limit 15 --download
 
 # Output logs will show download progress and any encountered errors.
 ```
+
+**Example using Python:**
+
+```python
+from bing_scraper import googleimagesdownload
+
+response = googleimagesdownload()
+paths, errors = response.download(
+    {
+        "search": "honeybees on flowers",
+        "limit": 10,
+        "download": True,
+    }
+)
+```
+
+To download more than 100 images, install Chrome and either let Selenium manage the driver or pass a driver path:
+
+```bash
+python3 bing_scraper.py --search "bees collecting pollen" --limit 300 --download --chromedriver /path/to/chromedriver
+```
+
+Use `-f` or `--format` to restrict downloads to one image format:
+
+```bash
+python3 bing_scraper.py --search "wildflowers" --limit 25 --download --format jpg
+```
+
+On Windows Command Prompt, prefer double quotes around URLs and search terms. Single quotes can be passed to Python as literal URL characters by `cmd.exe`.
+
+Legacy Google-era options such as `--similar_images` remain limited because this fork now targets Bing Images. Prefer direct `--search`, `--keywords`, or `--url` workflows for reliable scraping.
 
 The downloaded images can be useful for creating custom [computer vision datasets](https://docs.ultralytics.com/datasets/).
 
