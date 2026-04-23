@@ -790,7 +790,7 @@ class googleimagesdownload:
                 # counter will tell if it is first param added or not
                 built_url = built_url + ext_param if counter == 0 else f"{built_url},{ext_param}"
                 counter += 1
-        return lang_url + built_url + exact_size + time_range
+        return lang_url + (built_url if counter or exact_size or time_range else "") + exact_size + time_range
 
     # building main search URL
     def build_search_url(self, search_term, params, url, similar_images, specific_site, safe_search):
@@ -809,9 +809,9 @@ class googleimagesdownload:
                 + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
             )
         elif specific_site:
-            url = f"https://www.bing.com/images/search?q={quote(f'{search_term} site:{specific_site}')}"
+            url = f"https://www.bing.com/images/search?q={quote(f'{search_term} site:{specific_site}')}{params}"
         else:
-            url = f"https://www.bing.com/images/search?q={quote(search_term)}"
+            url = f"https://www.bing.com/images/search?q={quote(search_term)}{params}"
 
         # safe search check
         if safe_search:
@@ -1154,8 +1154,6 @@ class googleimagesdownload:
             and not arguments["url"]
         ):
             arguments["keywords"] = arguments["search"]
-            if not arguments["image_directory"]:
-                arguments["image_directory"] = arguments["search"].replace(" ", "_")
 
         if arguments["keywords"]:
             search_keyword = [str(item) for item in arguments["keywords"].split(",")]

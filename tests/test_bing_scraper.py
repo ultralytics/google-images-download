@@ -56,6 +56,33 @@ def test_url_argument_strips_shell_quotes(monkeypatch):
     assert urls == ["https://www.bing.com/images/search?q=parcel"]
 
 
+def test_search_preserves_filter_params(monkeypatch):
+    """Bing search URLs should retain existing format/filter parameters."""
+    scraper = bing_scraper.googleimagesdownload()
+    urls = []
+
+    monkeypatch.setattr(scraper, "download_page", lambda url: urls.append(url) or "")
+    monkeypatch.setattr(scraper, "_get_all_items", lambda *args, **kwargs: ([], 0, []))
+
+    scraper.download({"search": "cats", "limit": 1, "download": False, "format": "jpg"})
+
+    assert urls == ["https://www.bing.com/images/search?q=cats&tbs=ift:jpg"]
+
+
+def test_comma_search_keeps_per_keyword_directories(monkeypatch):
+    """Direct Python `search` aliases should match `keywords` directory behavior for comma-separated terms."""
+    scraper = bing_scraper.googleimagesdownload()
+    directories = []
+
+    monkeypatch.setattr(scraper, "create_directories", lambda main_directory, dir_name: directories.append(dir_name))
+    monkeypatch.setattr(scraper, "download_page", lambda url: "")
+    monkeypatch.setattr(scraper, "_get_all_items", lambda *args, **kwargs: ([], 0, []))
+
+    scraper.download({"search": "cats,dogs", "limit": 1, "download": True})
+
+    assert directories == ["cats", "dogs"]
+
+
 def test_download_image_uses_content_type_for_extensionless_urls(monkeypatch, tmp_path):
     """Image URLs without filename extensions should use the HTTP Content-Type extension."""
     scraper = bing_scraper.googleimagesdownload()
