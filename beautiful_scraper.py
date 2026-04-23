@@ -28,7 +28,7 @@ def download_baidu(word):
             print("exception")
             continue
 
-        string = f"pictures{word}_{str(i)}.jpg"
+        string = f"pictures{word}_{i!s}.jpg"
         with open(string, "wb") as fp:
             fp.write(pic.content)
         i += 1
@@ -48,8 +48,7 @@ def download_google(word):
 
 
 def get_html():
-    """Fetches and saves HTML content from DermNet to a local directory, requiring `requests`, `os`, and `tqdm`
-    modules.
+    """Fetches and saves HTML content from DermNet to a local directory, requiring `requests`, `os`, and `tqdm` modules.
     """
     url = "http://www.dermnet.com/dn2/allJPG3/"
     soup = BeautifulSoup(requests.get(url).text, "html.parser")

@@ -527,7 +527,7 @@ class googleimagesdownload:
         start_line = s.find('class="dtviD"')
         start_content = s.find('href="', start_line + 1)
         end_content = s.find('">', start_content + 1)
-        url_item = f"https://www.google.com{str(s[start_content + 6 : end_content])}"
+        url_item = f"https://www.google.com{s[start_content + 6 : end_content]!s}"
         url_item = url_item.replace("&amp;", "&")
 
         start_line_2 = s.find('class="dtviD"')
@@ -693,7 +693,7 @@ class googleimagesdownload:
 
         if arguments["exact_size"]:
             size_array = [x.strip() for x in arguments["exact_size"].split(",")]
-            exact_size = f",isz:ex,iszw:{str(size_array[0])},iszh:{str(size_array[1])}"
+            exact_size = f",isz:ex,iszw:{size_array[0]!s},iszh:{size_array[1]!s}"
         else:
             exact_size = ""
 
@@ -882,8 +882,7 @@ class googleimagesdownload:
         format,
         ignore_urls,
     ):
-        """Downloads an image from a URL and saves it to a specified directory, supporting various formats and
-        options.
+        """Downloads an image from a URL and saves it to a specified directory, supporting various formats and options.
         """
         download_message = ""
         if not download:
@@ -938,7 +937,7 @@ class googleimagesdownload:
                 if no_numbering:
                     path = f"{main_directory}/{dir_name}/{prefix}{image_name}"
                 else:
-                    path = f"{main_directory}/{dir_name}/{prefix}{str(count)}.{image_name}"
+                    path = f"{main_directory}/{dir_name}/{prefix}{count!s}.{image_name}"
 
                 try:
                     with open(path, "wb") as output_file:
@@ -961,7 +960,7 @@ class googleimagesdownload:
 
                 # image size parameter
                 if not silent_mode and print_size:
-                    print(f"Image Size: {str(self.file_size(path))}")
+                    print(f"Image Size: {self.file_size(path)!s}")
 
             except UnicodeEncodeError as e:
                 download_status = "fail"
@@ -1015,8 +1014,7 @@ class googleimagesdownload:
 
     # Finding 'Next Image' from the given raw page
     def _get_next_item(self, s):
-        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not
-        found.
+        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not found.
         """
         start_line = s.find("imgpt")
         if start_line == -1:
@@ -1097,7 +1095,7 @@ class googleimagesdownload:
             i += 1
         if count < limit:
             print(
-                f"Unfortunately all {str(limit - count)} could not be downloaded because some images were not downloadable. {str(count - 1)} is all we got for this search filter!"
+                f"Unfortunately all {limit - count!s} could not be downloaded because some images were not downloadable. {count - 1!s} is all we got for this search filter!"
             )
         return items, errorCount, abs_path
 
@@ -1149,7 +1147,12 @@ class googleimagesdownload:
         if arguments["url"]:
             arguments["url"] = self.clean_url(arguments["url"])
 
-        if arguments["search"] and not arguments["keywords"] and not arguments["keywords_from_file"] and not arguments["url"]:
+        if (
+            arguments["search"]
+            and not arguments["keywords"]
+            and not arguments["keywords_from_file"]
+            and not arguments["url"]
+        ):
             arguments["keywords"] = arguments["search"]
             if not arguments["image_directory"]:
                 arguments["image_directory"] = arguments["search"].replace(" ", "_")
@@ -1312,7 +1315,7 @@ def main():
         if arguments["single_image"]:  # Download Single Image using a URL
             response.single_image(arguments["single_image"])
         else:  # or download multiple images based on keywords/keyphrase search
-            paths, errors = response.download(arguments)  # wrapping response in a variable just for consistency
+            _paths, errors = response.download(arguments)  # wrapping response in a variable just for consistency
             total_errors = total_errors + errors
 
         t1 = time.time()  # stop the timer
