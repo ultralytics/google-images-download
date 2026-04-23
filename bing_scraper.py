@@ -22,7 +22,7 @@ import sys
 import time  # Importing the time library to check the time of code execution
 import urllib.request
 from http.client import BadStatusLine, IncompleteRead
-from urllib.parse import quote
+from urllib.parse import quote, unquote, urlsplit, urlunsplit
 from urllib.request import HTTPError, Request, URLError, urlopen
 
 from tqdm import tqdm
@@ -46,6 +46,7 @@ args_list = [
     "time",
     "time_range",
     "delay",
+    "search",
     "url",
     "single_image",
     "output_directory",
@@ -390,6 +391,60 @@ class googleimagesdownload:
         """Initializes a googleimagesdownload object to fetch images from Google Images."""
         pass
 
+    @staticmethod
+    def clean_url(url):
+        """Returns a URL without surrounding whitespace or shell quote characters."""
+        return str(url).strip().strip("'\"") if url else url
+
+    @staticmethod
+    def normalize_image_format(image_format):
+        """Normalizes image format aliases for filtering and filenames."""
+        if not image_format:
+            return ""
+        image_format = str(image_format).lower().strip().lstrip(".")
+        return "jpg" if image_format == "jpeg" else image_format
+
+    def format_from_url(self, image_url):
+        """Infers an image format from a URL path extension."""
+        path = urlsplit(self.clean_url(image_url)).path
+        image_format = os.path.splitext(path)[1].lstrip(".")
+        return self.normalize_image_format(image_format)
+
+    def format_from_content_type(self, content_type):
+        """Infers an image format from a response Content-Type header."""
+        content_type = str(content_type or "").split(";")[0].strip().lower()
+        return {
+            "image/bmp": "bmp",
+            "image/gif": "gif",
+            "image/jpeg": "jpg",
+            "image/jpg": "jpg",
+            "image/png": "png",
+            "image/svg+xml": "svg",
+            "image/webp": "webp",
+            "image/x-icon": "ico",
+            "image/vnd.microsoft.icon": "ico",
+        }.get(content_type, "")
+
+    def quote_url(self, image_url):
+        """Percent-encodes non-ASCII URL characters while preserving URL separators."""
+        image_url = self.clean_url(image_url)
+        parts = urlsplit(image_url)
+        return urlunsplit(
+            (
+                parts.scheme,
+                parts.netloc.encode("idna").decode("ascii") if parts.netloc else "",
+                quote(parts.path, safe="/%:@"),
+                quote(parts.query, safe="=&?/:;+,%"),
+                quote(parts.fragment, safe="=&?/:;+,%"),
+            )
+        )
+
+    @staticmethod
+    def safe_filename(filename):
+        """Returns a filesystem-safe filename while preserving Unicode characters."""
+        filename = unquote(filename) or "image"
+        return re.sub(r'[\\/:*?"<>|\x00-\x1f]', "_", filename)
+
     # Downloading entire Web Document (Raw Page Content)
     def download_page(self, url):
         """Downloads raw page content from URL using custom User-Agent; returns string."""
@@ -415,7 +470,7 @@ class googleimagesdownload:
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
 
-        service = Service(chromedriver)
+        service = Service(chromedriver) if chromedriver else Service()
         options = webdriver.ChromeOptions()
 
         options.add_argument("--no-sandbox")
@@ -432,23 +487,24 @@ class googleimagesdownload:
         browser.set_window_size(1920, 3840)  # 4k
 
         # Open the link
-        browser.get(url)
-        time.sleep(0.5)
+        try:
+            browser.get(self.clean_url(url))
+            time.sleep(0.5)
 
-        element = browser.find_element(By.TAG_NAME, "body")
-        pbar = tqdm(enumerate(range(30)), desc="Downloading HTML...", total=30)  # progress bar
-        for _ in pbar:
-            try:
-                # browser.find_element_by_id("smb").click()  # google images 'see more' button
-                browser.find_element(By.CLASS_NAME, "btn_seemore").click()  # bing images 'see more' button
-            except Exception:
-                pass
-            pbar.desc = "Downloading HTML... %d elements" % len(browser.page_source)  # page source
-            element.send_keys(Keys.PAGE_DOWN)
-            time.sleep(random.random() * 0.2 + 0.1)  # bot id protection
+            element = browser.find_element(By.TAG_NAME, "body")
+            pbar = tqdm(enumerate(range(30)), desc="Downloading HTML...", total=30)  # progress bar
+            for _ in pbar:
+                try:
+                    browser.find_element(By.CLASS_NAME, "btn_seemore").click()  # bing images 'see more' button
+                except Exception:
+                    pass
+                pbar.desc = "Downloading HTML... %d elements" % len(browser.page_source)  # page source
+                element.send_keys(Keys.PAGE_DOWN)
+                time.sleep(random.random() * 0.2 + 0.1)  # bot id protection
 
-        source = browser.page_source  # page source
-        browser.close()  # close browser
+            source = browser.page_source  # page source
+        finally:
+            browser.quit()
 
         return source
 
@@ -511,10 +567,9 @@ class googleimagesdownload:
         """Formats input object by cleaning and structuring image-related fields, returning a dictionary with formatted
         image data.
         """
-        if "?" in object["murl"]:
-            object["murl"] = object["murl"].split("?")[0]
+        object["murl"] = self.clean_url(object["murl"])
         formatted_object = {
-            "image_format": object["murl"].split(".")[-1],
+            "image_format": self.format_from_url(object["murl"]),
             "image_height": False,
             "image_width": False,
         }
@@ -744,7 +799,7 @@ class googleimagesdownload:
         """
         # check the args and choose the URL
         if url:
-            url = url
+            url = self.clean_url(url)
         elif similar_images:
             print(similar_images)
             keywordem = self.similar_images(similar_images)
@@ -754,27 +809,13 @@ class googleimagesdownload:
                 + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
             )
         elif specific_site:
-            url = (
-                "https://www.google.com/search?q="
-                + quote(search_term.encode("utf-8"))
-                + "&as_sitesearch="
-                + specific_site
-                + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
-                + params
-                + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
-            )
+            url = f"https://www.bing.com/images/search?q={quote(f'{search_term} site:{specific_site}')}"
         else:
-            url = (
-                "https://www.google.com/search?q="
-                + quote(search_term.encode("utf-8"))
-                + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch"
-                + params
-                + "&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
-            )
+            url = f"https://www.bing.com/images/search?q={quote(search_term)}"
 
         # safe search check
         if safe_search:
-            safe_search_string = "&safe=active"
+            safe_search_string = "&adlt=strict"
             url = url + safe_search_string
 
         return url
@@ -853,8 +894,9 @@ class googleimagesdownload:
             return "fail", "Image ignored due to 'ignore url' parameter", None, image_url
 
         try:
+            image_url = self.clean_url(image_url)
             req = Request(
-                image_url,
+                self.quote_url(image_url),
                 headers={
                     "User-Agent": "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
                 },
@@ -864,12 +906,15 @@ class googleimagesdownload:
                 timeout = float(socket_timeout) if socket_timeout else 10
                 response = urlopen(req, None, timeout)
                 data = response.read()
+                content_format = self.format_from_content_type(response.headers.get("Content-Type"))
                 response.close()
 
-                extensions = [".jpg", ".jpeg", ".gif", ".png", ".bmp", ".svg", ".webp", ".ico"]
-                # keep everything after the last '/'
-                image_name = str(image_url[(image_url.rfind("/")) + 1 :])
-                if format and (not image_format or image_format != format):
+                extensions = {"jpg", "gif", "png", "bmp", "svg", "webp", "ico"}
+                filename_extensions = extensions | {"jpeg"}
+                image_format = self.normalize_image_format(image_format)
+                requested_format = self.normalize_image_format(format)
+                resolved_format = image_format if image_format in extensions else content_format
+                if requested_format and requested_format != resolved_format:
                     download_status = "fail"
                     download_message = "Wrong image format returned. Skipping..."
                     return_image_name = ""
@@ -877,17 +922,16 @@ class googleimagesdownload:
                     download_message = f"{image_url} {download_message}"
                     return download_status, download_message, return_image_name, absolute_path
 
-                if image_format == "" or not image_format or f".{image_format}" not in extensions:
+                if not resolved_format or resolved_format not in extensions:
                     download_status = "fail"
                     download_message = "Invalid or missing image format. Skipping..."
                     return_image_name = ""
                     absolute_path = ""
                     download_message = f"{image_url} {download_message}"
                     return download_status, download_message, return_image_name, absolute_path
-                elif image_name.lower().find(f".{image_format}") < 0:
-                    image_name = f"{image_name}.{image_format}"
-                else:
-                    image_name = image_name[: image_name.lower().find(f".{image_format}") + (len(image_format) + 1)]
+                image_name = self.safe_filename(os.path.basename(urlsplit(image_url).path))
+                if not image_name.lower().endswith(tuple(f".{extension}" for extension in filename_extensions)):
+                    image_name = f"{image_name}.{resolved_format}"
 
                 # prefix name in image
                 prefix = f"{prefix} " if prefix else ""
@@ -1102,6 +1146,14 @@ class googleimagesdownload:
             if arg not in arguments:
                 arguments[arg] = None
         ######Initialization and Validation of user arguments
+        if arguments["url"]:
+            arguments["url"] = self.clean_url(arguments["url"])
+
+        if arguments["search"] and not arguments["keywords"] and not arguments["keywords_from_file"] and not arguments["url"]:
+            arguments["keywords"] = arguments["search"]
+            if not arguments["image_directory"]:
+                arguments["image_directory"] = arguments["search"].replace(" ", "_")
+
         if arguments["keywords"]:
             search_keyword = [str(item) for item in arguments["keywords"].split(",")]
 
@@ -1206,7 +1258,7 @@ class googleimagesdownload:
                     )  # building main search url
 
                     print(f"Searching for {url}")
-                    if limit < 1:  # if limit < 101
+                    if limit <= 100:
                         raw_html = self.download_page(url)  # download page
                     else:
                         raw_html = self.download_extended_page(url, arguments["chromedriver"])
@@ -1236,7 +1288,7 @@ class googleimagesdownload:
                         for key, value in tabs.items():
                             final_search_term = search_term + " - " + key
                             print("\nNow Downloading - " + final_search_term)
-                            if limit < 1:  # if limit < 101:
+                            if limit <= 100:
                                 new_raw_html = self.download_page(value)  # download page
                             else:
                                 new_raw_html = self.download_extended_page(value, arguments["chromedriver"])
