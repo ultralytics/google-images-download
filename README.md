@@ -106,13 +106,13 @@ Contributions from the community are highly encouraged and appreciated! Your inp
 
 We also invite you to participate in our [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey) to share your feedback, helping us understand your needs and improve our offerings. A heartfelt thank you 🙏 to all our contributors for their dedication and support!
 
-[![Ultralytics open-source contributors](https://raw.githubusercontent.com/ultralytics/assets/main/im/image-contributors.png)](https://github.com/ultralytics/ultralytics/graphs/contributors)
+[![Ultralytics open-source contributors](https://raw.githubusercontent.com/ultralytics/assets/main/im/image-contributors.png)](https://github.com/ultralytics/google-images-download/graphs/contributors)
 
 ## 🔏 License
 
 Ultralytics provides two licensing options to accommodate different usage needs:
 
-- **AGPL-3.0 License**: Ideal for students, researchers, and enthusiasts working on open-source projects. It promotes collaboration and knowledge sharing. See the [LICENSE](https://github.com/ultralytics/ultralytics/blob/main/LICENSE) file for full details.
+- **AGPL-3.0 License**: Ideal for students, researchers, and enthusiasts working on open-source projects. It promotes collaboration and knowledge sharing. See the [LICENSE](https://github.com/ultralytics/google-images-download/blob/main/LICENSE) file for full details.
 - **Enterprise License**: Designed for commercial use cases, this license allows integration of Ultralytics software into proprietary products and services without the open-source requirements of AGPL-3.0. For more information, visit [Ultralytics Licensing](https://www.ultralytics.com/license).
 
 ## 📬 Contact
