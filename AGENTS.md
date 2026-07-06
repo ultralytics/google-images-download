@@ -50,7 +50,7 @@ ruff format . && ruff check --fix .
 ```
 
 - CI (`ci.yml`) runs on Python 3.11, ubuntu-latest only, on pull_request/push to main and a daily cron; there is no version matrix and no packaging (no `pyproject.toml`/`setup.py`).
-- `requirements.txt` covers `bing_scraper.py` only (numpy, tqdm, pillow, selenium). The auxiliary scripts need extra deps not listed there: `beautiful_scraper.py` uses `requests`+`beautifulsoup4`, `clean_images.py` uses `scikit-image`.
+- `requirements.txt` lists only numpy, tqdm, pillow, and selenium. The auxiliary scripts import extra deps not listed there: `beautiful_scraper.py` needs `requests`+`beautifulsoup4`, `clean_images.py` needs `scikit-image`.
 
 ## Architecture
 
@@ -62,7 +62,7 @@ Three independent top-level scripts, none installable as a package; each is run 
 
 ## Conventions
 
-- Every file starts with `# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license` — Ultralytics Actions adds headers automatically; don't add or revert them manually.
+- Every Python file starts with `# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license` — Ultralytics Actions adds headers automatically; don't add or revert them manually.
 - Google-style docstrings; `format.yml` runs Ruff, docformatter, prettier (YAML/JSON/Markdown), and codespell, and its prettier output can differ from local — expect bot commits on PR branches.
 - Tests (`tests/`) run fully offline: `conftest.py` puts the repo root on `sys.path`, and `test_bing_scraper.py` uses `monkeypatch`/stubs so no network or Chrome is needed — keep new tests network-free to stay CI-safe.
 - No versioning or release process: the repo is not published to PyPI, has no `__version__`, and needs no version bump.
