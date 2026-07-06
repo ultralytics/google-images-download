@@ -882,8 +882,7 @@ class googleimagesdownload:
         format,
         ignore_urls,
     ):
-        """Downloads an image from a URL and saves it to a specified directory, supporting various formats and options.
-        """
+        """Downloads an image from a URL and saves it to a specified directory, supporting various formats and options."""
         download_message = ""
         if not download:
             download_message = f"{image_url} {download_message}"
@@ -1014,8 +1013,7 @@ class googleimagesdownload:
 
     # Finding 'Next Image' from the given raw page
     def _get_next_item(self, s):
-        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not found.
-        """
+        """Parses HTML to find next image link; returns tuple of (link, end_position) or ('no_links', 0) if not found."""
         start_line = s.find("imgpt")
         if start_line == -1:
             return "no_links", 0
