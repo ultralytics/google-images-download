@@ -18,7 +18,6 @@ class FakeResponse:
 
     def close(self):
         """Close the fake response."""
-        return
 
 
 def test_python_search_argument_uses_bing(monkeypatch):
