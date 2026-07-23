@@ -1179,11 +1179,11 @@ class googleimagesdownload:
         # Setting limit on number of images to be downloaded
         limit = int(arguments["limit"]) if arguments["limit"] else 100
         if arguments["url"]:
-            current_time = str(datetime.datetime.now(datetime.timezone.utc)).split(".")[0]
+            current_time = str(datetime.datetime.now().astimezone()).split(".")[0]
             search_keyword = [current_time.replace(":", "_")]
 
         if arguments["similar_images"]:
-            current_time = str(datetime.datetime.now(datetime.timezone.utc)).split(".")[0]
+            current_time = str(datetime.datetime.now().astimezone()).split(".")[0]
             search_keyword = [current_time.replace(":", "_")]
 
         # If single_image or url argument not present then keywords is mandatory argument
