@@ -387,9 +387,6 @@ def user_input():
 class googleimagesdownload:
     """A class for downloading images from Google Images using various search parameters and filters."""
 
-    def __init__(self):
-        """Initializes a googleimagesdownload object to fetch images from Google Images."""
-
     @staticmethod
     def clean_url(url):
         """Returns a URL without surrounding whitespace or shell quote characters."""
