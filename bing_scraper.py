@@ -613,11 +613,8 @@ class googleimagesdownload:
             file_name = f"{main_directory}/{image_name}.jpg"
             image_name = f"{image_name}.jpg"
 
-        try:
-            with open(file_name, "wb") as output_file:
-                output_file.write(data)
-        except OSError:
-            raise
+        with open(file_name, "wb") as output_file:
+            output_file.write(data)
         print("completed ====> " + image_name.encode("raw_unicode_escape").decode("utf-8"))
 
     def similar_images(self, similar_images):
