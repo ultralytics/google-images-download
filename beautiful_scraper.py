@@ -17,7 +17,7 @@ def download_uri(uri, dir="./"):
 def download_baidu(word):
     """Downloads images from Baidu based on a search word, saving them with a specific naming convention."""
     url = f"https://image.baidu.com/search/flip?tn=baiduimage&ie=utf-8&word={word}&ct=201326592&v=flip"
-    pic_url = re.findall('"objURL":"(.*?)",', requests.get(url).text, re.S)
+    pic_url = re.findall('"objURL":"(.*?)",', requests.get(url).text, re.DOTALL)
 
     i = 0
     for each in pic_url:

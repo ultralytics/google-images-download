@@ -387,10 +387,6 @@ def user_input():
 class googleimagesdownload:
     """A class for downloading images from Google Images using various search parameters and filters."""
 
-    def __init__(self):
-        """Initializes a googleimagesdownload object to fetch images from Google Images."""
-        pass
-
     @staticmethod
     def clean_url(url):
         """Returns a URL without surrounding whitespace or shell quote characters."""
@@ -608,19 +604,15 @@ class googleimagesdownload:
             image_name = image_name[: image_name.find("?")]
         # if ".jpg" in image_name or ".gif" in image_name or ".png" in image_name or ".bmp" in image_name or ".svg"
         # in image_name or ".webp" in image_name or ".ico" in image_name:
-        if any(map(lambda extension: extension in image_name, extensions)):
+        if any(extension in image_name for extension in extensions):
             file_name = f"{main_directory}/{image_name}"
         else:
             file_name = f"{main_directory}/{image_name}.jpg"
             image_name = f"{image_name}.jpg"
 
-        try:
-            with open(file_name, "wb") as output_file:
-                output_file.write(data)
-        except (OSError, OSError) as e:
-            raise e
+        with open(file_name, "wb") as output_file:
+            output_file.write(data)
         print("completed ====> " + image_name.encode("raw_unicode_escape").decode("utf-8"))
-        return
 
     def similar_images(self, similar_images):
         """Finds images similar to the input URL by performing a Google reverse image search."""
@@ -860,7 +852,6 @@ class googleimagesdownload:
         except OSError as e:
             if e.errno != 17:
                 raise
-        return
 
     # Download Images
     def download_image(
