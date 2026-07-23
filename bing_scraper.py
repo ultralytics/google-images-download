@@ -83,7 +83,8 @@ def user_input():
 
     records = []
     if object_check["config_file"] != "":
-        json_file = json.load(open(config_file_check[0].config_file))
+        with open(config_file_check[0].config_file) as file:
+            json_file = json.load(file)
         for record in range(len(json_file["Records"])):
             arguments = {i: None for i in args_list}
             for key, value in json_file["Records"][record].items():
@@ -494,7 +495,7 @@ class googleimagesdownload:
                     browser.find_element(By.CLASS_NAME, "btn_seemore").click()  # bing images 'see more' button
                 except Exception:
                     pass
-                pbar.desc = "Downloading HTML... %d elements" % len(browser.page_source)  # page source
+                pbar.desc = f"Downloading HTML... {len(browser.page_source)} elements"  # page source
                 element.send_keys(Keys.PAGE_DOWN)
                 time.sleep(random.random() * 0.2 + 0.1)  # bot id protection
 
@@ -1101,7 +1102,8 @@ class googleimagesdownload:
                 print(paths.encode("raw_unicode_escape").decode("utf-8"))
         elif "config_file" in arguments:
             records = []
-            json_file = json.load(open(arguments["config_file"]))
+            with open(arguments["config_file"]) as file:
+                json_file = json.load(file)
             for record in range(len(json_file["Records"])):
                 arguments = {i: None for i in args_list}
                 for key, value in json_file["Records"][record].items():
@@ -1177,11 +1179,11 @@ class googleimagesdownload:
         # Setting limit on number of images to be downloaded
         limit = int(arguments["limit"]) if arguments["limit"] else 100
         if arguments["url"]:
-            current_time = str(datetime.datetime.now()).split(".")[0]
+            current_time = str(datetime.datetime.now(datetime.timezone.utc)).split(".")[0]
             search_keyword = [current_time.replace(":", "_")]
 
         if arguments["similar_images"]:
-            current_time = str(datetime.datetime.now()).split(".")[0]
+            current_time = str(datetime.datetime.now(datetime.timezone.utc)).split(".")[0]
             search_keyword = [current_time.replace(":", "_")]
 
         # If single_image or url argument not present then keywords is mandatory argument
@@ -1267,9 +1269,8 @@ class googleimagesdownload:
                                 os.makedirs("logs")
                         except OSError as e:
                             print(e)
-                        json_file = open("logs/" + search_keyword[i] + ".json", "w")
-                        json.dump(items, json_file, indent=4, sort_keys=True)
-                        json_file.close()
+                        with open("logs/" + search_keyword[i] + ".json", "w") as file:
+                            json.dump(items, file, indent=4, sort_keys=True)
 
                     # Related images
                     if arguments["related_images"]:
