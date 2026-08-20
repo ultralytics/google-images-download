@@ -1,13 +1,13 @@
-<a href="https://www.ultralytics.com/"><img src="https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_Logotype_Original.svg" width="320" alt="Ultralytics logo"></a>
+<a href="https://www.ultralytics.com"><img src="https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_Logotype_Original.svg" width="320" alt="Ultralytics logo"></a>
 
 # 🚀 Introduction
 
-Welcome to the Bing Image Scraper, a tool updated and maintained by Ultralytics. This repository provides enhanced code, originally based on the [google-images-download](https://github.com/hardikvasa/google-images-download) project by hardikvasa, specifically adapted for scraping images from Bing. It allows users to efficiently download images for various purposes, such as building datasets for [machine learning](https://www.ultralytics.com/glossary/machine-learning-ml), performing [data analysis](https://en.wikipedia.org/wiki/Data_analysis), or curating collections for personal projects. Explore more tools and models at [Ultralytics](https://www.ultralytics.com/).
+Welcome to the Bing Image Scraper, a tool updated and maintained by Ultralytics. This repository provides enhanced code, originally based on the [google-images-download](https://github.com/hardikvasa/google-images-download) project by hardikvasa, specifically adapted for scraping images from Bing. It allows users to efficiently download images for various purposes, such as building datasets for [machine learning](https://www.ultralytics.com/glossary/machine-learning-ml), performing [data analysis](https://en.wikipedia.org/wiki/Data_analysis), or curating collections for personal projects. Explore more tools and models at [Ultralytics](https://www.ultralytics.com).
 
 [![CI](https://github.com/ultralytics/google-images-download/actions/workflows/ci.yml/badge.svg)](https://github.com/ultralytics/google-images-download/actions/workflows/ci.yml)
 [![Ultralytics Discord](https://img.shields.io/discord/1089800235347353640?logo=discord&logoColor=white&label=Discord&color=blue)](https://discord.com/invite/ultralytics)
-[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com/)
-[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://reddit.com/r/ultralytics)
+[![Ultralytics Forums](https://img.shields.io/discourse/users?server=https%3A%2F%2Fcommunity.ultralytics.com&logo=discourse&label=Forums&color=blue)](https://community.ultralytics.com)
+[![Ultralytics Reddit](https://img.shields.io/reddit/subreddit-subscribers/ultralytics?style=flat&logo=reddit&logoColor=white&label=Reddit&color=blue)](https://www.reddit.com/r/ultralytics/)
 
 ## 🐳 Docker Run
 
@@ -92,7 +92,7 @@ On Windows Command Prompt, prefer double quotes around URLs and search terms. Si
 
 Legacy Google-era options such as `--similar_images` remain limited because this fork now targets Bing Images. Prefer direct `--search`, `--keywords`, or `--url` workflows for reliable scraping.
 
-The downloaded images can be useful for creating custom [computer vision datasets](https://docs.ultralytics.com/datasets/).
+The downloaded images can be useful for creating custom [computer vision datasets](https://docs.ultralytics.com/datasets).
 
 <img src="https://user-images.githubusercontent.com/26833433/75287228-dcf2ca80-57ce-11ea-9557-cc13abaff453.jpg" width="800" alt="Example output showing downloaded images in a folder">
 
@@ -102,7 +102,7 @@ If you use this software in your research or projects, please acknowledge the or
 
 ## 🤝 Contributing
 
-Contributions from the community are highly encouraged and appreciated! Your input helps make this open-source tool better for everyone. Whether it's reporting a bug, suggesting a new feature, or submitting code improvements, please refer to our [Contributing Guide](https://docs.ultralytics.com/help/contributing/) for details on how to get started.
+Contributions from the community are highly encouraged and appreciated! Your input helps make this open-source tool better for everyone. Whether it's reporting a bug, suggesting a new feature, or submitting code improvements, please refer to our [Contributing Guide](https://docs.ultralytics.com/help/contributing) for details on how to get started.
 
 We also invite you to participate in our [Survey](https://www.ultralytics.com/survey?utm_source=github&utm_medium=social&utm_campaign=Survey) to share your feedback, helping us understand your needs and improve our offerings. A heartfelt thank you 🙏 to all our contributors for their dedication and support!
 
