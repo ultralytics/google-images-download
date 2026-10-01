@@ -90,8 +90,6 @@ python3 bing_scraper.py --search "wildflowers" --limit 25 --download --format jp
 
 On Windows Command Prompt, prefer double quotes around URLs and search terms. Single quotes can be passed to Python as literal URL characters by `cmd.exe`.
 
-Legacy Google-era options such as `--similar_images` remain limited because this fork now targets Bing Images. Prefer direct `--search`, `--keywords`, or `--url` workflows for reliable scraping.
-
 The downloaded images can be useful for creating custom [computer vision datasets](https://docs.ultralytics.com/datasets).
 
 <img src="https://user-images.githubusercontent.com/26833433/75287228-dcf2ca80-57ce-11ea-9557-cc13abaff453.jpg" width="800" alt="Example output showing downloaded images in a folder">
