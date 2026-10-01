@@ -756,9 +756,7 @@ class googleimagesdownload:
 
     # building main search URL
     def build_search_url(self, search_term, params, url, specific_site, safe_search):
-        """Constructs a Google search URL based on input parameters such as search term, image specificity, and safe
-        search settings.
-        """
+        """Constructs a Bing Images search URL from the search term, optional site filter, and safe search setting."""
         # check the args and choose the URL
         if url:
             url = self.clean_url(url)
