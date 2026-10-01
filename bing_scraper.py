@@ -52,7 +52,6 @@ args_list = [
     "output_directory",
     "image_directory",
     "proxy",
-    "similar_images",
     "specific_site",
     "print_urls",
     "print_size",
@@ -234,13 +233,6 @@ def user_input():
             type=str,
             required=False,
             choices=["tall", "square", "wide", "panoramic"],
-        )
-        parser.add_argument(
-            "-si",
-            "--similar_images",
-            help="downloads images very similar to the image URL you provide",
-            type=str,
-            required=False,
         )
         parser.add_argument(
             "-ss",
@@ -615,29 +607,6 @@ class googleimagesdownload:
             output_file.write(data)
         print("completed ====> " + image_name.encode("raw_unicode_escape").decode("utf-8"))
 
-    def similar_images(self, similar_images):
-        """Finds images similar to the input URL by performing a Google reverse image search."""
-        try:
-            searchUrl = f"https://www.google.com/searchbyimage?site=search&sa=X&image_url={similar_images}"
-            headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
-            }
-            req1 = urllib.request.Request(searchUrl, headers=headers)
-            resp1 = urllib.request.urlopen(req1)
-            content = str(resp1.read())
-            l1 = content.find("AMhZZ")
-            l2 = content.find("&", l1)
-            urll = content[l1:l2]
-
-            newurl = f"https://www.google.com/search?tbs=sbi:{urll}&site=search&sa=X"
-            req2 = urllib.request.Request(newurl, headers=headers)
-            urllib.request.urlopen(req2)
-            l3 = content.find("/search?sa=X&amp;q=")
-            l4 = content.find(";", l3 + 19)
-            return content[l3 + 19 : l4]
-        except Exception:
-            return "Cloud not connect to Google Images endpoint"
-
     # Building URL parameters
     def build_url_parameters(self, arguments):
         """Generates URL parameters for language specifications using given language option."""
@@ -786,21 +755,11 @@ class googleimagesdownload:
         return lang_url + (built_url if counter or exact_size or time_range else "") + exact_size + time_range
 
     # building main search URL
-    def build_search_url(self, search_term, params, url, similar_images, specific_site, safe_search):
-        """Constructs a Google search URL based on input parameters such as search term, image specificity, and safe
-        search settings.
-        """
+    def build_search_url(self, search_term, params, url, specific_site, safe_search):
+        """Constructs a Bing Images search URL from the search term, optional site filter, and safe search setting."""
         # check the args and choose the URL
         if url:
             url = self.clean_url(url)
-        elif similar_images:
-            print(similar_images)
-            keywordem = self.similar_images(similar_images)
-            url = (
-                "https://www.google.com/search?q="
-                + keywordem
-                + "&espv=2&biw=1366&bih=667&site=webhp&source=lnms&tbm=isch&sa=X&ei=XosDVaCXD8TasATItgE&ved=0CAcQ_AUoAg"
-            )
         elif specific_site:
             url = f"https://www.bing.com/images/search?q={quote(f'{search_term} site:{specific_site}')}{params}"
         else:
@@ -1182,15 +1141,10 @@ class googleimagesdownload:
             current_time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H_%M_%S")
             search_keyword = [current_time]
 
-        if arguments["similar_images"]:
-            current_time = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H_%M_%S")
-            search_keyword = [current_time]
-
         # If single_image or url argument not present then keywords is mandatory argument
         if (
             arguments["single_image"] is None
             and arguments["url"] is None
-            and arguments["similar_images"] is None
             and arguments["keywords"] is None
             and arguments["keywords_from_file"] is None
         ):
@@ -1244,7 +1198,6 @@ class googleimagesdownload:
                         search_term,
                         params,
                         arguments["url"],
-                        arguments["similar_images"],
                         arguments["specific_site"],
                         arguments["safe_search"],
                     )  # building main search url
